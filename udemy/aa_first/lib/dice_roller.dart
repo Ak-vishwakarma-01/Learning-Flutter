@@ -39,7 +39,7 @@ class _DiceRoller extends State<DiceRoller>{
                 foregroundColor: Colors.white70,
                 padding: const EdgeInsets.only(top: 20),
                 ), 
-              child: const StyledText("Roll Dice",30),
+              child: const StyledText("Roll Dice",30,Colors.blue),
             ),
           ],
         );
