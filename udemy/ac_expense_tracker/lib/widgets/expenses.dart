@@ -32,11 +32,24 @@ void _openAddExpneseOverlay(){
   
   // showModelBottomSheet wiill dynamically add new ui element
   // here argument contest is given derived by State globally in this class
-  // context holdes infromation about this Expnses class
+  // context holds infromation about this Expnses class
   showModalBottomSheet(
+    isScrollControlled: true,   // it will make to take full screen
     context: context, 
-    builder: (ctx)=> const NewExpense(),  // on clickin gadd button this widget call will open
+    builder: (ctx)=> NewExpense(onAddExpense: _addExpense,),  // on clickin gadd button this widget call will open
   );
+}
+
+void _addExpense(Expense expense) {
+  setState(() { 
+  _registeredExpenses.add(expense);
+  });
+}
+
+void _removeExpense(Expense expense) {
+  setState(() {
+    _registeredExpenses.remove(expense);
+  });
 }
 
 @override
@@ -55,7 +68,7 @@ Widget build(context){
       children: [
         const Text("THE CHART"),
         Expanded(
-          child:  ExpnesesList(expenses: _registeredExpenses),
+          child:  ExpnesesList(expenses: _registeredExpenses, removeExpense: _removeExpense,),
           ),
       ],),
   );
