@@ -66,7 +66,7 @@ class _StateNewExpense extends State<NewExpense> {
       );
       return;
     }
-    
+
     widget.onAddExpense(Expense(
       title: _titleController.text,
       amount: entereAmmount,
@@ -79,6 +79,12 @@ class _StateNewExpense extends State<NewExpense> {
 
   @override
   Widget build(context) {
+     // it will check if app is in darkmode
+     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+     final textColor = isDarkMode 
+      ? const Color.fromARGB(255, 134, 243, 137) 
+      : Theme.of(context).textTheme.titleMedium?.color; 
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
       child: Column(
@@ -90,6 +96,7 @@ class _StateNewExpense extends State<NewExpense> {
             decoration: const InputDecoration(
               label: Text('Title'),
             ),
+            style: TextStyle(color: textColor), // it will only change it is in darkmode
           ),
           Row(
             children: [
@@ -99,7 +106,9 @@ class _StateNewExpense extends State<NewExpense> {
                   keyboardType:
                       TextInputType.number, // keyboard use to shwo input
                   decoration: const InputDecoration(
-                      prefix: Text("\$ "), label: Text('Amount')),
+                      prefix: Text("\$ "), label: Text('Amount'),
+                  ),
+                  style: TextStyle(color: textColor), // it will only change it is in darkmode
                 ),
               ),
               const SizedBox(
@@ -110,10 +119,12 @@ class _StateNewExpense extends State<NewExpense> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(_selectedDate == null
-                        ? "no selected date"
+                    Text(_selectedDate == null  // updating the date here
+                        ? "select date"
                         : formatter
-                            .format(_selectedDate!)), // updating the date here
+                        .format(_selectedDate!),
+                        style: Theme.of(context).textTheme.titleMedium, // it will change automatically by lookin is it in dark mode or not
+                        ), 
                     IconButton(
                       onPressed: _presentDayPicker, // pop up new date picker
                       icon: const Icon(
@@ -154,8 +165,7 @@ class _StateNewExpense extends State<NewExpense> {
                 children: [
                   TextButton(
                     onPressed: () {
-                      Navigator.pop(
-                          context); // it will remove the overlays widget
+                      Navigator.pop(context); // it will remove the overlays widget
                     },
                     child: const Text("Cancel"),
                   ),

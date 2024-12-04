@@ -1,76 +1,111 @@
+import 'package:ac_expense_tracker/widgets/chart/chart.dart';
 import 'package:ac_expense_tracker/widgets/expenses_list/expneses_list.dart';
 import 'package:ac_expense_tracker/models/expense.dart';
 import 'package:ac_expense_tracker/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
 
-class Expenses extends StatefulWidget{
+class Expenses extends StatefulWidget {
   const Expenses({super.key});
 
   @override
   State<Expenses> createState() {
     return _ExpensesState();
   }
-
 }
 
-class _ExpensesState extends State<Expenses>{
-
-final List<Expense> _registeredExpenses = [
-  Expense(
-    title: "flutter course", 
-    amount: 23.23, date: DateTime.now(), 
-    category: Category.work,
+class _ExpensesState extends State<Expenses> {
+  final List<Expense> _registeredExpenses = [
+    Expense(
+      title: "flutter course",
+      amount: 23.23,
+      date: DateTime.now(),
+      category: Category.work,
     ),
     Expense(
-    title: "Cinema", 
-    amount: 12.32, date: DateTime.now(), 
-    category: Category.leisure,
+      title: "Cinema",
+      amount: 12.32,
+      date: DateTime.now(),
+      category: Category.leisure,
     ),
-];
+  ];
 
-void _openAddExpneseOverlay(){
-  
-  // showModelBottomSheet wiill dynamically add new ui element
-  // here argument contest is given derived by State globally in this class
-  // context holds infromation about this Expnses class
-  showModalBottomSheet(
-    isScrollControlled: true,   // it will make to take full screen
-    context: context, 
-    builder: (ctx)=> NewExpense(onAddExpense: _addExpense,),  // on clickin gadd button this widget call will open
-  );
-}
+  void _openAddExpneseOverlay() {
+    // showModelBottomSheet wiill dynamically add new ui element
+    // here argument contest is given derived by State globally in this class
+    // context holds infromation about this Expnses class
+    showModalBottomSheet(
+      isScrollControlled: true, // it will make to take full screen
+      context: context,
+      builder: (ctx) => NewExpense(
+        onAddExpense: _addExpense,
+      ), // on clickin gadd button this widget call will open
+    );
+  }
 
-void _addExpense(Expense expense) {
-  setState(() { 
-  _registeredExpenses.add(expense);
-  });
-}
+  void _addExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.add(expense);
+    });
+  }
 
-void _removeExpense(Expense expense) {
-  setState(() {
-    _registeredExpenses.remove(expense);
-  });
-}
+  void _removeExpense(Expense expense) {
+    final expenseIndex = _registeredExpenses.indexOf(expense);
+    setState(() {
+      _registeredExpenses.remove(expense);
+    });
 
-@override
-Widget build(context){
-  return Scaffold(
-    appBar: AppBar(   // just by adding appBar it will leave space for camera
-      title: const Text("flutter Expense Tracker"),
-      actions: [
-        IconButton(
-          onPressed: _openAddExpneseOverlay,
-          icon: const Icon(Icons.add),
+    ScaffoldMessenger.of(context)
+        .clearSnackBars(); // it will cleaer privous snackbar
+    ScaffoldMessenger.of(context).showSnackBar(
+      // It is use to show the notification button to bottom
+      SnackBar(
+        duration: const Duration(seconds: 3),
+        content: const Text('Expense Deleted'),
+        action: SnackBarAction(
+            label: "Undo", // this will be button connected to the onpressed
+            onPressed: () {
+              setState(() {
+                _registeredExpenses.insert(expenseIndex, expense);
+              });
+            }),
+      ),
+    );
+  }
+
+  @override
+  Widget build(context) {
+    Widget mainContent = const Center(
+      child: Text("No expenses available"),
+    );
+
+    if (_registeredExpenses.isNotEmpty) {
+      mainContent = ExpnesesList(
+        expenses: _registeredExpenses,
+        removeExpense: _removeExpense,
+      );
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        // just by adding appBar it will leave space for camera
+        title: const Text(
+          "Flutter Expense Tracker",
+        ),
+        actions: [
+          IconButton(
+            onPressed: _openAddExpneseOverlay,
+            icon: const Icon(Icons.add),
           ),
-      ],
-    ),
-    body: Column(
-      children: [
-        const Text("THE CHART"),
-        Expanded(
-          child:  ExpnesesList(expenses: _registeredExpenses, removeExpense: _removeExpense,),
+        ],
+      ),
+      body: Column(
+        children: [
+          Chart(expenses: _registeredExpenses),
+          Expanded(
+            child: mainContent,
           ),
-      ],),
-  );
-}
+        ],
+      ),
+    );
+  }
 }

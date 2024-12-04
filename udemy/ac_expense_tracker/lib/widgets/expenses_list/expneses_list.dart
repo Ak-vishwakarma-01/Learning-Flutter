@@ -14,7 +14,13 @@ class ExpnesesList extends StatelessWidget{
     return ListView.builder(   // we don't know the toatl items then we should not use column widget , can use ListView 
       itemCount: expenses.length,
       itemBuilder: (ctx,index)=> Dismissible(  // Dismissible is use to slide the data which is inside this
-        key: ValueKey(expenses[index]),        // key is use to identify that on sliding anthoder data should not delete
+        key: ValueKey(expenses[index]),       // key is use to identify that on sliding anthoder data should not delete
+        background: Container(  // on sliding the color will be ther in background
+          color: Theme.of(context).colorScheme.error.withOpacity(.5), // taking from main.dart
+          margin:EdgeInsets.symmetric(
+            horizontal: Theme.of(context).cardTheme.margin!.horizontal,
+          ),
+        ),
         onDismissed: (direction){         // it takes direction where we want to slide left or right but here i am ignoring it;
           removeExpense(expenses[index]);
         },
