@@ -29,16 +29,17 @@ class _ExpensesState extends State<Expenses> {
     ),
   ];
 
-  void _openAddExpneseOverlay() {
     // showModelBottomSheet wiill dynamically add new ui element
     // here argument contest is given derived by State globally in this class
     // context holds infromation about this Expnses class
+  void _openAddExpneseOverlay() {
     showModalBottomSheet(
-      isScrollControlled: true, // it will make to take full screen
+      useSafeArea: true,              // it will make sure that it will not overlap with the camera
+      isScrollControlled: true,       // it will make to take full screen
       context: context,
-      builder: (ctx) => NewExpense(
+      builder: (ctx) => NewExpense(       // on clicking add button this widget call will open
         onAddExpense: _addExpense,
-      ), // on clickin gadd button this widget call will open
+      ), 
     );
   }
 
@@ -54,8 +55,7 @@ class _ExpensesState extends State<Expenses> {
       _registeredExpenses.remove(expense);
     });
 
-    ScaffoldMessenger.of(context)
-        .clearSnackBars(); // it will cleaer privous snackbar
+    ScaffoldMessenger.of(context).clearSnackBars(); // it will cleaer privous snackbar
     ScaffoldMessenger.of(context).showSnackBar(
       // It is use to show the notification button to bottom
       SnackBar(
@@ -74,6 +74,8 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(context) {
+    final width = MediaQuery.of(context).size.width; // it will check the width in current orientation
+
     Widget mainContent = const Center(
       child: Text("No expenses available"),
     );
@@ -98,14 +100,24 @@ class _ExpensesState extends State<Expenses> {
           ),
         ],
       ),
-      body: Column(
+      body: width<600 ? Column(
         children: [
           Chart(expenses: _registeredExpenses),
           Expanded(
             child: mainContent,
           ),
         ],
-      ),
+      )
+      : Row(
+          children: [
+            Expanded(    // in chart we have use size infinite double that's why we have to use Expanded
+              child: Chart(expenses: _registeredExpenses),
+            ),
+            Expanded(
+              child: mainContent,
+          ),
+        ], 
+      )
     );
   }
 }
