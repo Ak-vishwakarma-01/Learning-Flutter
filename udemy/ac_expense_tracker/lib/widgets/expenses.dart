@@ -61,7 +61,7 @@ class _ExpensesState extends State<Expenses> {
       SnackBar(
         duration: const Duration(seconds: 3),
         content: const Text('Expense Deleted'),
-        action: SnackBarAction(
+        action: SnackBarAction(   // actionbar take action also
             label: "Undo", // this will be button connected to the onpressed
             onPressed: () {
               setState(() {
