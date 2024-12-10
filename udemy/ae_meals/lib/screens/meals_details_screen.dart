@@ -1,25 +1,35 @@
 import 'package:ae_meals/models/meal.dart';
+import 'package:ae_meals/provider/favorite_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MealsDetailsScreen extends StatelessWidget{
+class MealsDetailsScreen extends ConsumerWidget{  // to use of provider in stateless we use consumerwidget
   const MealsDetailsScreen({
     super.key,
     required this.meal,
-    required this.onToggleFavorite,
+
   });
 
   final Meal meal;
-  final void Function(Meal meal) onToggleFavorite;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {  // this ref lesten to providers
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),  
         actions: [
           IconButton(
-            onPressed: () {
-              onToggleFavorite(meal);  // on clicking will make fvorie or delete varorite
+            onPressed: () {     // on clicking will make fvorie or delete varorite
+            final wasAdded = ref        //When you use ref.read, the widget will not be rebuilt when the state changes
+              .read(favoriteMealsProvider.notifier)
+              .toggleMealFavoriteStatus(meal); 
+
+              ScaffoldMessenger.of(context).clearSnackBars(); // clear snackbar
+              ScaffoldMessenger.of(context).showSnackBar(  // snackmessge when i click on favorite start
+              SnackBar(
+                content: Text(wasAdded ? 'Meal added as a Favorite' : 'Meal Removed'),
+                backgroundColor: Colors.green,
+                ),
+              ); 
             },
             icon: Icon(Icons.star),
           ),

@@ -1,6 +1,6 @@
-import 'package:ae_meals/screens/categories_screen.dart';
 import 'package:ae_meals/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /*  
     How i am navigating the screen
@@ -22,7 +22,11 @@ final theme = ThemeData(
 );
 
 void main() {
-  runApp(const App());
+  runApp(
+      const ProviderScope(   // without this we cannot pass all files from provider
+        child: App(),
+      ),
+    );
 }
 
 class App extends StatelessWidget {

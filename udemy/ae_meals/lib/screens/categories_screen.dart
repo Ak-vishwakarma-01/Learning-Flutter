@@ -8,13 +8,14 @@ import 'package:flutter/material.dart';
 class CategoriesScreen extends StatelessWidget{
   const CategoriesScreen({
     super.key,
-    required this.onToggleFavorie,
+    required this.availableMeals,
   });
-  final void Function(Meal meal) onToggleFavorie;
+
+  final List<Meal> availableMeals;
 
   // Adding new Screen
   void _selectCategory(BuildContext context, Catogory category){   // it will take context to navigat to the new screen in the form of stack 
-    final filterdMeals = dummyMeals.where(
+    final filterdMeals = availableMeals.where(
       (meal) => meal.categories.contains(category.id),
     ).toList();
 
@@ -22,7 +23,6 @@ class CategoriesScreen extends StatelessWidget{
       MaterialPageRoute(
         builder: (context) =>
           MealScreen(
-            onToggleFavorite: onToggleFavorie,
             title: category.title, 
             meals: filterdMeals,
           ),
