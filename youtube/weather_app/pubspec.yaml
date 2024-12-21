@@ -30,7 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  http: ^1.2.2
+  geolocator: ^13.0.2    // to get current location
+  permission_handler: ^11.3.1  // to turn on the permission
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

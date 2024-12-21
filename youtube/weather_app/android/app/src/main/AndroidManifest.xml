@@ -1,4 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    
+
+    <!--  use it for permission loaction-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOACTION"/>
+
     <application
         android:label="weather_app"
         android:name="${applicationName}"

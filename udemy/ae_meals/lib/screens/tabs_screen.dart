@@ -1,6 +1,5 @@
 import 'package:ae_meals/provider/favorite_provider.dart';
 import 'package:ae_meals/provider/filters_provider.dart';
-import 'package:ae_meals/provider/meals_provider.dart';
 import 'package:ae_meals/screens/categories_screen.dart';
 import 'package:ae_meals/screens/filers_Screen.dart';
 import 'package:ae_meals/screens/meals_screen.dart';
@@ -49,23 +48,8 @@ class _TabsScreenState extends ConsumerState<TabsScreen>{
   @override
   Widget build(BuildContext context) {  // wheenere meals provider change thei context also update
 
-    final meals = ref.watch(mealsProvider);
-    final activeFilters = ref.watch(filtersProvider);  // When the state changes, the widget that uses ref.watch will be rebuilt, causing the UI to update accordingly. This is useful when you need to update a widget based on changes to the state.
-    final availableMeals = meals.where((meal) {  // gettting this meals from provider;
-      if (activeFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
-        return false;
-      }
-      if (activeFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
-        return false;
-      }
-      if (activeFilters[Filter.vegetarian]! && !meal.isVegetarian) {
-        return false;
-      }
-      if (activeFilters[Filter.vegan]! && !meal.isVegan) {
-        return false;
-      }
-      return true;  // If none of the above conditions are met, the meal is available
-    }).toList();  
+
+    final availableMeals =  ref.watch(filteredMealsProvider);  // When the state changes, the widget that uses ref.watch will be rebuilt, causing the UI to update accordingly. This is useful when you need to update a widget based on changes to the state.
       
     Widget activePage  = CategoriesScreen(  // which page will be render
  

@@ -20,6 +20,8 @@ The current route is removed from the stack and replaced by the new route.
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final activeFilters = ref.watch(filtersProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Filtered Meals'),
@@ -38,7 +40,7 @@ The current route is removed from the stack and replaced by the new route.
       body: Column(
           children: [
             SwitchListTile(  // SwitchListTile widget in Flutter is used to create a list item with a switch (toggle) control. It's particularly useful in settings screens or anywhere you need to allow users to toggle a boolean option on or off. Combination of ListTile and Switch:
-              value: _glutenFreeFilterSet, 
+              value: activeFilters[Filter.glutenFree]!, 
               onChanged: (isChecked){      // onChanged is a callback function that gets called whenever the switch is toggled (i.e., when its state changes from on to off or vice versa). The function takes a single parameter isChecked, which is a boolean value. This value represents the new state of the switch: true if the switch has been turned on false if the switch has been turned off
                 ref.read(filtersProvider.notifier).setFilter(Filter.glutenFree,isChecked);
               },
@@ -58,11 +60,9 @@ The current route is removed from the stack and replaced by the new route.
               contentPadding: const EdgeInsets.only(left: 34, right: 23),
             ),
             SwitchListTile(  // SwitchListTile widget in Flutter is used to create a list item with a switch (toggle) control. It's particularly useful in settings screens or anywhere you need to allow users to toggle a boolean option on or off. Combination of ListTile and Switch:
-              value: _lactoseFreeFilterSet, 
+              value: activeFilters[Filter.lactoseFree]!, 
               onChanged: (isChecked){      // onChanged is a callback function that gets called whenever the switch is toggled (i.e., when its state changes from on to off or vice versa). The function takes a single parameter isChecked, which is a boolean value. This value represents the new state of the switch: true if the switch has been turned on false if the switch has been turned off
-                setState(() {
-                  _lactoseFreeFilterSet = isChecked;
-                });
+                ref.read(filtersProvider.notifier).setFilter(Filter.glutenFree,isChecked);
               },
               title: Text(
                 "lactose-free",
@@ -80,11 +80,9 @@ The current route is removed from the stack and replaced by the new route.
               contentPadding: const EdgeInsets.only(left: 34, right: 23),
             ), 
             SwitchListTile(  // SwitchListTile widget in Flutter is used to create a list item with a switch (toggle) control. It's particularly useful in settings screens or anywhere you need to allow users to toggle a boolean option on or off. Combination of ListTile and Switch:
-              value: _vegeterianFilterSet, 
+              value: activeFilters[Filter.vegetarian]!, 
               onChanged: (isChecked){      // onChanged is a callback function that gets called whenever the switch is toggled (i.e., when its state changes from on to off or vice versa). The function takes a single parameter isChecked, which is a boolean value. This value represents the new state of the switch: true if the switch has been turned on false if the switch has been turned off
-                setState(() {
-                  _vegeterianFilterSet = isChecked;
-                });
+                ref.read(filtersProvider.notifier).setFilter(Filter.glutenFree,isChecked);
               },
               title: Text(
                 "vegetarian",
@@ -102,11 +100,9 @@ The current route is removed from the stack and replaced by the new route.
               contentPadding: const EdgeInsets.only(left: 34, right: 23),
             ),
             SwitchListTile(  // SwitchListTile widget in Flutter is used to create a list item with a switch (toggle) control. It's particularly useful in settings screens or anywhere you need to allow users to toggle a boolean option on or off. Combination of ListTile and Switch:
-              value: _veganFilterSet, 
+              value: activeFilters[Filter.vegan]!, 
               onChanged: (isChecked){      // onChanged is a callback function that gets called whenever the switch is toggled (i.e., when its state changes from on to off or vice versa). The function takes a single parameter isChecked, which is a boolean value. This value represents the new state of the switch: true if the switch has been turned on false if the switch has been turned off
-                setState(() {
-                  _veganFilterSet = isChecked;
-                });
+                ref.read(filtersProvider.notifier).setFilter(Filter.glutenFree,isChecked);
               },
               title: Text(
                 "Vegan",

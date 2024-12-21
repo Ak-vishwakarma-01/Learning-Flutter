@@ -3,6 +3,12 @@ import 'package:ae_meals/provider/favorite_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/*
+ why Riverpod is used 
+ Dependency Injection: . In this case, it's used to inject the favoriteMealsProvider.
+State Management: state management across the app. The favoriteMealsProvider is likely managing the state of favorite meals.
+Reactivity: Riverpod enables reactive programming. When the state changes, it automatically rebuilds 
+*/
 class MealsDetailsScreen extends ConsumerWidget{  // to use of provider in stateless we use consumerwidget
   const MealsDetailsScreen({
     super.key,
@@ -13,6 +19,9 @@ class MealsDetailsScreen extends ConsumerWidget{  // to use of provider in state
   final Meal meal;
   @override
   Widget build(BuildContext context, WidgetRef ref) {  // this ref lesten to providers
+    final favoritmeals = ref.watch(favoriteMealsProvider);
+    final isFavorite = favoritmeals.contains(meal);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),  
@@ -30,8 +39,19 @@ class MealsDetailsScreen extends ConsumerWidget{  // to use of provider in state
                 backgroundColor: Colors.green,
                 ),
               ); 
-            },
-            icon: Icon(Icons.star),
+            }, 
+            icon: AnimatedSwitcher(   // putting Icon insside AnimatedSwitcher to animate icon
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                return RotationTransition(
+                  turns: animation, 
+                  child: child,  // this child is referencing the child icon
+                ); 
+              },
+              child: Icon( isFavorite ? Icons.star : Icons.star_border, 
+               key: ,  // key is important without this it will not animate that which widget it wants to animate 
+              ), 
+            ) 
           ),
         ],
       ),
